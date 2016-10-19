@@ -3,7 +3,7 @@
 
 This script takes the .md files from the folder "article", and convert 
 them to html and creates a special index page index.html. After each 
-commit script automatically rebuilds the [site](https://galbator1x.github.io/galbator1x.github.io-site-generator/).
+commit script automatically rebuilds the [site](https://galbator1x.github.io/galbator1x.github.io-site-generator/) in your local repository.
 
 Usage
 -----
