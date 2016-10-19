@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block css %}
+  <link href="static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="static/css/style.css" rel="stylesheet">
+  <link href="static/css/index.css" rel="stylesheet">
+{% endblock %}
+
+{% block bootstrap_js %}
+  <script src="static/js/bootstrap.min.js"></script>
+{% endblock %}
+
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <h1>Энциклопедия</h1>
+      <hr>
+      <div class="col-lg-4">
+        {% for topic in topics %}
+          {% if loop.index <= loop.length // 3 %}
+            <p class="topic">{{ topic.title }}</p>
+            <ul>
+              {% for article in articles %}
+                {% if topic.slug == article.topic %}
+                  <li><a href="{{ article.source }}">{{ article.title }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="col-lg-4">
+        {% for topic in topics %}
+          {% if loop.length // 3 < loop.index <= (loop.length // 3) * 2  %}
+            <p class="topic">{{ topic.title }}</p>
+            <ul>
+              {% for article in articles %}
+                {% if topic.slug == article.topic %}
+                  <li><a href="{{ article.source }}">{{ article.title }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      <div class="col-lg-4">
+        {% for topic in topics %}
+          {% if loop.index > (loop.length // 3) * 2 %}
+            <p class="topic">{{ topic.title }}</p>
+            <ul>
+              {% for article in articles %}
+                {% if topic.slug == article.topic %}
+                  <li><a href="{{ article.source }}">{{ article.title }}</a></li>
+                {% endif %}
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}

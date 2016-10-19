@@ -1,0 +1,6 @@
+#!/bin/bash
+
+python3 site_generator.py
+
+echo "Maybe site was rebuilt, use git status to check."
+exit 0
