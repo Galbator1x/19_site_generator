@@ -8,7 +8,7 @@ commit script automatically rebuilds the [site](https://galbator1x.github.io/gal
 Usage
 -----
 
-Put 'post-commit' into ./git/hooks/
+Put 'post-commit' into .git/hooks/
 
 ```
 ~$ chmod +x .git/hooks/post-commit
