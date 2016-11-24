@@ -40,7 +40,7 @@ def remove_old_articles(config):
 
 def load_file(path):
     with open(path) as file_handle:
-        return file_handle.read()
+        return file_handle.readlines()
 
 
 def save_template(template, path):
@@ -48,17 +48,22 @@ def save_template(template, path):
         file_handle.write(template)
 
 
-def render_article_template(markdown, env, **kwargs):
-    markdown = ''.join(('{% extends "base_page.html" %}{% block article %}',
-                        markdown,
-                        '{% endblock %}'))
-    template = env.from_string(markdown)
+def render_article_template(article_template_path, env, **kwargs):
+    template = env.get_template(article_template_path)
     return template.render(kwargs)
 
 
-def render_index_template(path, env, **kwargs):
+def render_template(path, env, **kwargs):
     template = env.get_template(path)
     return template.render(kwargs)
+
+
+def remove_useless_tags_in_markdown(markdown):
+    markdown_ = ''
+    for line in markdown:
+        if not ':::' in line:
+            markdown_ += line
+    return markdown_
 
 
 def generate_site(config):
@@ -66,18 +71,21 @@ def generate_site(config):
     path_to_articles = 'articles'
     index_path = 'base_index.html'
     index_out_path = 'index.html'
+    article_template_path = 'base_page.html'
     env = Environment()
     env.loader = FileSystemLoader(path_to_templates)
 
     for article in config['articles']:
         path_to_article = os.path.join(path_to_articles, article['source'])
         md = load_file(path_to_article)
+        md = remove_useless_tags_in_markdown(md)
         template = markdown(md)
-        template = render_article_template(template, env, title=article['title'])
+        template = render_template(article_template_path, env,
+                article=template, title=article['title'])
         save_template(template, get_path_to_article_html(path_to_article))
 
-    template = render_index_template(index_path, env, topics=config['topics'],
-                                     articles=get_articles_config_with_html_paths(config))
+    template = render_template(index_path, env, topics=config['topics'],
+            articles=get_articles_config_with_html_paths(config))
     save_template(template, index_out_path)
 
 
