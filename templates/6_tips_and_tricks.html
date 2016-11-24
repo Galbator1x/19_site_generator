@@ -32,31 +32,26 @@
         <p>Тут – разные мелочи, на которых обычно спотыкаются новички в Питоне. Шагай свободно.</p>
 <h3>Итерируй сразу по коллекции, а не по индексам</h3>
 <p>Раньше в C++ итерация по коллекции проходила так:</p>
-<pre><code>:::cpp
-for(int i = 0; i &lt; books_amount; i++) {
+<pre><code>for(int i = 0; i &lt; books_amount; i++) {
     cout &lt;&lt; books[i];
 }
 </code></pre>
 <p>Этот же способ используется в других языках. Поэтому на Питоне хочется написать так же:</p>
-<pre><code>:::python
-for i in len(books):
+<pre><code>for i in len(books):
     print(books[i])
 </code></pre>
 <p>Это неудобная дичь, древность и вообще. Вот как надо:</p>
-<pre><code>:::python
-for book in books:
+<pre><code>for book in books:
     print(book)
 </code></pre>
 <p>Часто вместе с элементом нужен его номер. Памятуя, что можно итерировать по коллекции, хочется сделать как-то так:</p>
-<pre><code>:::python
-i = 0 
+<pre><code>i = 0 
 for book in books:
     print(i, book)
     i += 1
 </code></pre>
 <p>Это тоже неудобная дичь, древность и вообще. Для этого есть встроенная функция <code>enumerate</code>:</p>
-<pre><code>:::python
-for book_number, book in enumerate(books):
+<pre><code>for book_number, book in enumerate(books):
     print(book_number, book)
 </code></pre>
 <p>Делай правильно и не делай неправильно.</p>
@@ -65,8 +60,7 @@ for book_number, book in enumerate(books):
 не хватает места на диске, пользователь ввёл неверные данные. </p>
 <p>В этом случае переменную с данными нужно чем-то заполнить, но со смыслом, типа, "тут ничего нет".</p>
 <p>Для "ничего" в Питоне есть <code>None</code>. Не пустая строка и не -1, а именно <code>None</code>:</p>
-<pre><code>:::python
-try:
+<pre><code>try:
     latitude = float(input('Введите широту: '))
 except ValueError:
     latitude = None
@@ -78,14 +72,12 @@ if latitude is None:
 Не <code>if latitude == None</code> и не <code>if latitude</code>. Это важно.</p>
 <h3>Меньше вложенности</h3>
 <p>Загрузим json из файла:</p>
-<pre><code>:::python
-def load_json_data(filepath):
+<pre><code>def load_json_data(filepath):
     with open(filepath, 'r') as file_handler:
         return json.load(file_handler)
 </code></pre>
 <p>Всё сломается, если передать путь до несуществующего файла. Исправим:</p>
-<pre><code>:::python
-def load_json_data(filepath):
+<pre><code>def load_json_data(filepath):
     if os.path.exists(filepath):
         with open(filepath, 'r') as file_handler:
             return json.load(file_handler)
@@ -95,8 +87,7 @@ def load_json_data(filepath):
 <p>Первый секрет: если функция ничего не возвращает, то она возвращает <code>None</code>. Поэтому писать <code>return None</code> в конце
  функции смысла нет.
 Избавляемся от <code>else</code>:</p>
-<pre><code>:::python
-def load_json_data(filepath):
+<pre><code>def load_json_data(filepath):
     if os.path.exists(filepath):
         with open(filepath, 'r') as file_handler:
             return json.load(file_handler)
@@ -105,8 +96,7 @@ def load_json_data(filepath):
 несколько уровней подчинений, сложным образом связанных друг с другом и заставляющие держать их все в
 памяти, чтобы понять смысл, пусть и простой.</p>
 <p>Упростить можно так:</p>
-<pre><code>:::python
-def load_json_data(filepath):
+<pre><code>def load_json_data(filepath):
     if not os.path.exists(filepath):
         return None
     with open(filepath, 'r') as file_handler:
@@ -116,23 +106,19 @@ def load_json_data(filepath):
 <h3>Используй превращение типов в bool</h3>
 <p>Часто в коде приходится проверять переменные на нулевые значения.
 Например, пустой список:</p>
-<pre><code>:::python
-if len(users) == 0:
+<pre><code>if len(users) == 0:
     pass
 </code></pre>
 <p>Или пустая строка:</p>
-<pre><code>:::python
-if user.email == '':
+<pre><code>if user.email == '':
     pass
 </code></pre>
 <p>Или ноль:</p>
-<pre><code>:::python
-if user.level == 0:
+<pre><code>if user.level == 0:
     pass
 </code></pre>
 <p>Все три примера выше – неверные. Вот их верные аналоги:</p>
-<pre><code>:::python
-if not users:
+<pre><code>if not users:
     pass
 
 if not user.email:
@@ -174,8 +160,7 @@ if not user.level:
 <h3>Больше функций</h3>
 <p>Функции нужны, чтобы сделать код понятным и реиспользуемым.</p>
 <p>Понятным – это когда с первого взгляда понятно, что он делает:</p>
-<pre><code>:::python
-credentials = load_oauth_credentials_from_file('fb_creds.json')
+<pre><code>credentials = load_oauth_credentials_from_file('fb_creds.json')
 fb_api = get_facebook_api(credentials)
 messages = fb_api.get_unread_messages()
 send_notifications_to_slack(messages=messages, user='ilebedev')
